@@ -2,8 +2,7 @@
 
 #Librerias
 
-library("pacman")
-p_load("vroom",
+pacman::p_load("vroom",
        "dplyr",
        "ggplot2", 
        "patchwork")
@@ -67,18 +66,21 @@ ROS_omics <- ROS %>%
 MAP_omics <- MAP %>% 
   filter(grepl(term_library, automatic_tags))
 
-###esta parte aun no la figuro, siguiente commit
+###esta parte aun no la figuro, siguiente comit
+
 ROSMAP_omics <- merge(x = ROS_omics, 
-                      y = MAP_omics, 
-                      by = ROS_omics$Key) 
+                      y = MAP_omics,
+                     all = T) %>% 
+  group_by(Title, Publication_Year, DOI, extra, link) %>% 
+  summarise() %>% 
+  arrange(Publication_Year)
 
 #saving new datasets 
 
-write.csv(ROS_omics,
-            file= "D:\\palin\\Documents\\UNAM_POSGRADO\\ROSMAP\\ROSMAP.csv",
+write.csv(ROSMAP_omics,
+            file= "D:\\palin\\Documents\\UNAM_POSGRADO\\ROSMAP\\ROSMAP_omics.csv",
           row.names= T, 
           quote = F)
-
 
 #saving plots
 
