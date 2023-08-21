@@ -52,14 +52,39 @@ plots <- plot_art_xanio_ROS / plot_art_xanio_MAP
 
 plots
 
-#saving plot
+#Analisis de omics
+
+#quiero analizar que filas contienen una palabra de una librería de palabras en la columna de  automatic_tags
+
+term_library <- c('omic | equence | RNA | transcript | enotype |
+               gene | PCR | allele | DNA | Array | array | ifferential | xpression |
+               nucleic | SNP | ucleotide')
+
+ROS_omics <- ROS %>% 
+  filter(grepl(term_library, automatic_tags))
+
+
+MAP_omics <- MAP %>% 
+  filter(grepl(term_library, automatic_tags))
+
+###esta parte aun no la figuro, siguiente commit
+ROSMAP_omics <- merge(x = ROS_omics, 
+                      y = MAP_omics, 
+                      by = ROS_omics$Key) 
+
+#saving new datasets 
+
+write.csv(ROS_omics,
+            file= "D:\\palin\\Documents\\UNAM_POSGRADO\\ROSMAP\\ROSMAP.csv",
+          row.names= T, 
+          quote = F)
+
+
+#saving plots
 
 ggsave( filename = "arts_ROS_MAP.png",     
-        plot = last_plot(),                   
+        plot = plots,                   
         device = "png",                           
         width = 18, height = 7, units = "in",     
         dpi = 300 ) 
-
-
-#Analisis de omics
 
